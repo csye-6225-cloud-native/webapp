@@ -3,8 +3,9 @@ spring:
     banner-mode: off
   datasource:
     url: jdbc:postgresql://localhost:5432/cloud_db
-    username: devops_admin
-    password: DevOps@670951
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
