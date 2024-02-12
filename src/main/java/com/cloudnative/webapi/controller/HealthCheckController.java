@@ -23,10 +23,10 @@ public class HealthCheckController {
 
     @GetMapping("/healthz")
     public ResponseEntity<Void> checkHealth(HttpServletRequest request) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("X-Content-Type-Options", "nosniff");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+//        headers.add("Pragma", "no-cache");
+//        headers.add("X-Content-Type-Options", "nosniff");
 
         if (!request.getParameterMap().isEmpty() || request.getContentLength() > 0) {
             return ResponseEntity
