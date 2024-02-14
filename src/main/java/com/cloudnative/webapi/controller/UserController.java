@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/self")
-    public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<?> updateUser(HttpServletRequest request, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (updateUserRequest != null) updateUserRequest.setUsername(username);
         return userService.updateUser(updateUserRequest);
