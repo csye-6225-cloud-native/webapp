@@ -51,7 +51,7 @@ To install and run the app locally, you need to have the following installed:
     ```
     
 
- Run the application:
+- Run the application:
    ```sh
    mvn spring-boot:run
    ```
