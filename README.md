@@ -1,50 +1,70 @@
 # Cloud Native Web App
 
-### Prerequisites
+## Overview
 
-What things you need to install the software and how to install them:
+This is a cloud-native web application built with Spring Boot and PostgreSQL.
+
+## Prerequisites
+
+To install and run the app locally, you need to have the following installed:
 
 - JDK 17 or later
-- Maven 3.2+
+- Maven 3.2 or later
 - PostgreSQL
 
-### Installing
 
-1. Clone the repository to your local machine: git clone <"Repo URL">
+## Installation
 
-2. Navigate to the project directory: cd webapp
+- Clone the repository to your local machine:
 
-3. Build the project using Maven: mvn clean install -DskipTests
+   ```sh
+   git clone git@github.com:csye-6225-cloud-native/webapp.git
+   ```
 
+- Navigate to the project directory:
+   
+    ```sh
+   cd webapp
+   ```
 
-4. Manually configure the following properties in application.yml file under src/main/resources as follows:
-```
+- Build the project using Maven:
+
+    ```sh
+   mvn clean install -DskipTests
+   ```
+
+- Manually configure the following properties in the application.yml file under src/main/resources:
+    ```yml
     spring:
         datasource:
-            url: "jdbc db url"
+            url: "Your jdbc url"
             username: "Your db username"
             password: "Your db password"
-```
+    ```
 
-OR
+    OR
 
-Configure the following ENV variables:
+    Configure the following environment variables (recommended):
+    ```sh
+    export POSTGRES_USER=test
+    export POSTGRES_PASSWORD=test
+    ```
+    
 
-```
-    POSTGRES_DB
-    POSTGRES_USER
-    POSTGRES_PASSWORD
-```
+ Run the application:
+   ```sh
+   mvn spring-boot:run
+   ```
+    > The application should be running on `http://localhost:8080`
 
-5. Run the application: `mvn spring-boot:run`
+## Testing
 
-OR
+- To run the tests:
 
-Run the application with ENV variables: `POSTGRES_DB=test POSTGRES_USER=test POSTGRES_PASSWORD=test mvn spring-boot:run`
+    ```sh
+    mvn test
+    ```
 
-The application should now be running on http://localhost:8080.
+## Author
 
-
-# Authors
-
-- *Pritesh Nimje* 
+[Pritesh Nimje](mailto:nimje.p@northeastern.edu)
