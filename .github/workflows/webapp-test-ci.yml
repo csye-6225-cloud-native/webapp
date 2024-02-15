@@ -36,15 +36,7 @@ jobs:
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.POSTGRES_USER }};"
 
       - name: Build Application
-        run: mvn clean -B install -DskipTests
-
-      - name: Run Application
-        run: mvn spring-boot:run &
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      - name: Wait for application to start
-        run: sleep 60
+        run: mvn clean -B install
 
       - name: Run Integration Tests
-        run: mvn verify -DskipUnitTests=true -DskipTests=false
+        run: mvn test
