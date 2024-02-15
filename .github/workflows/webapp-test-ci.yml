@@ -39,10 +39,12 @@ jobs:
         run: mvn clean -B install -DskipTests
 
       - name: Run Application
-        run: mvn spring-boot:run
+        run: mvn spring-boot:run &
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      - name: Wait for application to start
+        run: sleep 60
 
       - name: Run Integration Tests
         run: mvn verify -DskipUnitTests=true -DskipTests=false
