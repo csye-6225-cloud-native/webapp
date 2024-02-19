@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         UserResponse userResponse = new UserResponse();
-        userResponse.setId(user.getId());
+//        userResponse.setId(user.getId());
         userResponse.setUsername(user.getUsername());
         userResponse.setFirstname(user.getFirstname());
         userResponse.setLastname(user.getLastname());
