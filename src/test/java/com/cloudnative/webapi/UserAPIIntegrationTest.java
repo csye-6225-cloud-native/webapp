@@ -106,7 +106,7 @@ public class UserAPIIntegrationTest {
         getUserAndVerify(username, updatedPassword)
                 .body("id", notNullValue())
                 .body("username", equalTo(username))
-                .body("first_name", equalTo(updatedFirstname))
+                .body("first_name", equalTo("TestFail"))
                 .body("last_name", equalTo("TestLastname"));
     }
 
