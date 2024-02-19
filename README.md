@@ -65,6 +65,7 @@ To install and run the app locally, you need to have the following installed:
     mvn test
     ```
 
+_________
 ## Author
 
 [Pritesh Nimje](mailto:nimje.p@northeastern.edu)
