@@ -31,10 +31,11 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Create pkrvars configuration
+      - name: Packer Workspace
+        run: cd packer
+
+      - name: Packer Configuration
         run: |
-          cd packer
-          pwd
           touch gcp.pkrvars.hcl
           echo environment=\"${{ env.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
           echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
@@ -51,11 +52,10 @@ jobs:
 
       - name: Packer Init
         run: |
-          pwd
-          packer init ./gcp.pkr.hcl
+          packer init gcp.pkr.hcl
 
       - name: Packer Format
         run: "packer fmt ."
 
       - name: Packer Validate
-        run: "packer validate --var-file=gcp.pkrvars.hcl ./gcp.pkr.hcl"
+        run: "packer validate --var-file=gcp.pkrvars.hcl gcp.pkr.hcl"
