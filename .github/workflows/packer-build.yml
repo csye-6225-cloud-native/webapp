@@ -38,8 +38,11 @@ jobs:
           sudo -u postgres psql -c "CREATE USER ${{ secrets.POSTGRES_USER }} WITH PASSWORD '${{ secrets.POSTGRES_PASSWORD}}';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.POSTGRES_USER }};"
 
-      - name: Test and Build Artifact
-        run: mvn clean package
+      - name: Build Artifact
+        run: mvn clean package -DskipTests
+
+      - name: Run Tests
+        run: mvn test
 
       - name: Install and Configure gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
