@@ -1,5 +1,4 @@
-
-name: Web App With Tests CI
+name: Web App Tests
 
 on:
   pull_request:
