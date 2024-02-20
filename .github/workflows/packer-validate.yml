@@ -31,9 +31,6 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Packer Workspace
-        run: cd packer
-
       - name: Packer Configuration
         run: |
           touch gcp.pkrvars.hcl
@@ -49,13 +46,16 @@ jobs:
           echo disk_type=\"${{ secrets.DISK_TYPE }}\" >> gcp.pkrvars.hcl
           echo instance_name=\"${{ secrets.INSTANCE_NAME }}\" >> gcp.pkrvars.hcl
           echo machine_type=\"${{ secrets.MACHINE_TYPE }}\" >> gcp.pkrvars.hcl
+        working-directory: packer
 
       - name: Packer Init
-        run: |
-          packer init gcp.pkr.hcl
+        run: "packer init gcp.pkr.hcl"
+        working-directory: packer
 
       - name: Packer Format
         run: "packer fmt ."
+        working-directory: packer
 
       - name: Packer Validate
         run: "packer validate --var-file=gcp.pkrvars.hcl gcp.pkr.hcl"
+        working-directory: packer
