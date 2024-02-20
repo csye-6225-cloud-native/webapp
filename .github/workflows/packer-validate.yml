@@ -35,6 +35,7 @@ jobs:
         run: |
           cd packer
           touch gcp.pkrvars.hcl
+          ls -al
           echo environment=\"${{ env.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
           echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
           echo zone=\"${{ secrets.GCP_ZONE }}\" >> gcp.pkrvars.hcl
@@ -47,6 +48,7 @@ jobs:
           echo disk_type=\"${{ secrets.DISK_TYPE }}\" >> gcp.pkrvars.hcl
           echo instance_name=\"${{ secrets.INSTANCE_NAME }}\" >> gcp.pkrvars.hcl
           echo machine_type=\"${{ secrets.MACHINE_TYPE }}\" >> gcp.pkrvars.hcl
+          cat gcp.pkrvars.hcl
 
       - name: Packer Init
         run: "packer init gcp.pkr.hcl"
