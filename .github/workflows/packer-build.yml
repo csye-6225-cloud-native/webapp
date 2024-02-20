@@ -1,4 +1,4 @@
-name: Packer Validate - GCE Image
+name: Packer Build - GCE Image
 
 on:
   push:
