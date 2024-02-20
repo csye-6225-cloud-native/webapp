@@ -4,7 +4,6 @@
 sudo cp /tmp/webapp.service /lib/systemd/system/webapp.service
 
 sudo systemctl daemon-reload
-sudo setenforce 0
 sudo systemctl enable webapp.service
 sudo systemctl start webapp.service
 sudo systemctl status webapp.service
