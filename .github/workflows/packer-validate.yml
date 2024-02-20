@@ -34,6 +34,7 @@ jobs:
       - name: Create pkrvars configuration
         run: |
           cd packer
+          pwd
           touch gcp.pkrvars.hcl
           echo environment=\"${{ env.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
           echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
