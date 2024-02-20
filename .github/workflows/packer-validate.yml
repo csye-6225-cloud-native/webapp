@@ -34,7 +34,7 @@ jobs:
       - name: Packer Configuration
         run: |
           touch gcp.pkrvars.hcl
-          echo environment=\"${{ env.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
+          echo environment=\"${{ vars.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
           echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
           echo zone=\"${{ secrets.GCP_ZONE }}\" >> gcp.pkrvars.hcl
           echo ssh_username=\"${{ secrets.SSH_USERNAME }}\" >> gcp.pkrvars.hcl
