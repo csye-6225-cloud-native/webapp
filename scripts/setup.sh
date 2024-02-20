@@ -3,6 +3,11 @@
 # Update system packages
 sudo dnf update -y
 
+# Disable SELINUX policy
+sudo sed -i 's/^SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+sudo sed -i 's/^SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
+sudo setenforce 0
+
 ## Download and install OpenJDK 21
 curl -O https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.rpm
 sudo dnf install jdk-21_linux-x64_bin.rpm -y
