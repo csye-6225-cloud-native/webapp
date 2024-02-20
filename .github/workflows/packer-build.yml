@@ -39,10 +39,13 @@ jobs:
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.POSTGRES_USER }};"
 
       - name: Build Artifact
-        env:
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.POSTGRES_USER }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        run: mvn clean package -DskipTests
+        run: |
+          # Replace sensitive variables before building artifact
+          CONFIG_PATH="./src/main/resources/application.yml"
+          sed -i "s/\${POSTGRES_USER}/${{ secrets.POSTGRES_USER }}/g" $CONFIG_PATH
+          sed -i "s/\${POSTGRES_PASSWORD}/${{ secrets.POSTGRES_PASSWORD }}/g" $CONFIG_PATH
+          
+          mvn clean package -DskipTests
 
       - name: Run Tests
         run: mvn test
