@@ -35,7 +35,6 @@ jobs:
         run: |
           cd packer
           touch gcp.pkrvars.hcl
-          
           echo environment=\"${{ env.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
           echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
           echo zone=\"${{ secrets.GCP_ZONE }}\" >> gcp.pkrvars.hcl
