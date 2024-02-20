@@ -1,0 +1,76 @@
+name: Packer Validate - GCE Image
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  validate:
+    name: 'Packer Validate'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Test and Build Artifact
+        run: mvn clean package
+
+      - name: Install and Configure gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: 'latest'
+
+      - name: Packer Configuration
+        run: |
+          touch gcp.pkrvars.hcl
+          echo environment=\"${{ vars.ENVIRONMENT }}\" >> gcp.pkrvars.hcl
+          echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
+          echo zone=\"${{ secrets.GCP_ZONE }}\" >> gcp.pkrvars.hcl
+          echo ssh_username=\"${{ secrets.SSH_USERNAME }}\" >> gcp.pkrvars.hcl
+          echo db_user=\"${{ secrets.POSTGRES_USER }}\" >> gcp.pkrvars.hcl
+          echo db_password=\"${{ secrets.POSTGRES_PASSWORD }}\" >> gcp.pkrvars.hcl
+          echo source_image_family=\"${{ secrets.SOURCE_IMAGE_FAMILY }}\" >> gcp.pkrvars.hcl
+          echo subnet_id=\"${{ secrets.SUBNET_ID }}\" >> gcp.pkrvars.hcl
+          echo disk_size=${{ secrets.DISK_SIZE }} >> gcp.pkrvars.hcl
+          echo disk_type=\"${{ secrets.DISK_TYPE }}\" >> gcp.pkrvars.hcl
+          echo instance_name=\"${{ secrets.INSTANCE_NAME }}\" >> gcp.pkrvars.hcl
+          echo machine_type=\"${{ secrets.MACHINE_TYPE }}\" >> gcp.pkrvars.hcl
+        working-directory: packer
+
+      - name: Packer Init
+        run: "packer init gcp.pkr.hcl"
+        working-directory: packer
+
+      - name: Packer Format
+        run: "packer fmt ."
+        working-directory: packer
+
+      - name: Packer Validate
+        run: "packer validate --var-file=gcp.pkrvars.hcl gcp.pkr.hcl"
+        working-directory: packer
+
+      - name: Packer Build
+        run: "packer build --var-file=gcp.pkrvars.hcl gcp.pkr.hcl"
+        working-directory: packer
