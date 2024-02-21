@@ -76,6 +76,8 @@ jobs:
           echo disk_type=\"${{ secrets.DISK_TYPE }}\" >> gcp.pkrvars.hcl
           echo instance_name=\"${{ secrets.INSTANCE_NAME }}\" >> gcp.pkrvars.hcl
           echo machine_type=\"${{ secrets.MACHINE_TYPE }}\" >> gcp.pkrvars.hcl
+          echo image_name=\"${{ secrets.IMAGE_NAME }}\" >> gcp.pkrvars.hcl
+          echo image_family_name=\"${{ secrets.IMAGE_FAMILY_NAME }}\" >> gcp.pkrvars.hcl
         working-directory: packer
 
       - name: Packer Init
