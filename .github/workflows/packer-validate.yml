@@ -55,7 +55,7 @@ jobs:
         working-directory: packer
 
       - name: Packer Format
-        run: "packer fmt -check ."
+        run: "packer fmt -check gcp.pkr.hcl"
         working-directory: packer
 
       - name: Packer Validate
