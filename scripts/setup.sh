@@ -42,9 +42,9 @@ else
 fi
 
 # Configure PostgreSQL
-sudo -i -u postgres bash <<EOF
+sudo -i -u postgres psql <<EOF
 CREATE DATABASE cloud_db;
 CREATE ROLE $POSTGRES_USER WITH LOGIN PASSWORD '$POSTGRES_PASSWORD';
-\c cloud_db
 GRANT ALL PRIVILEGES ON DATABASE cloud_db TO $POSTGRES_USER;
 EOF
+
