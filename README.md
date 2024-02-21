@@ -65,6 +65,65 @@ To install and run the app locally, you need to have the following installed:
     mvn test
     ```
 
+## Packer - custom GCE image
+
+### Prerequisites
+
+Ensure the following prerequisites are installed and configured:
+
+- Packer
+
+### Configuration with pkrvars.hcl
+
+To configure infrastructure for different environments (eg dev, stage, prod):
+
+- Create a env.pkrvars.hcl file (eg, dev.pkrvars.hcl, prod.pkrvars.hcl, etc) in `/packer` folder
+- Sample env.pkrvars.hcl file:
+```hcl
+    environment         = "dev"
+    project_id          = "gcp project id"
+    zone                = "gcp zone"
+    ssh_username        = "xxxxxxx"
+    db_user             = "xxxxxxx"
+    db_password         = "xxxxxxx"
+    source_image_family = "centos-stream-8"
+    subnet_id           = "xxxxxxx"
+    disk_size           = 20
+    disk_type           = "pd-standard"
+    instance_name       = "webapp-vm"
+    machine_type        = "e2-medium"
+    image_name          = "webapp-v1"
+    image_family_name   = "webapp-centos-8"
+
+``` 
+
+### Steps to build custom image
+
+- Navigate to the packer directory:
+    ```sh
+   cd packer
+   ```
+
+- Initialize packer workspace:
+    ```sh
+   packer init .
+   ```
+
+- Format configuration files:
+    ```sh
+   packer fmt .
+   ```
+
+- Validate configuration files:
+    ```sh
+   packer validate .
+   ```
+
+- Build custom image:
+    ```sh
+   packer build -var-file="env.pkrvars.hcl" gcp.pkr.hcl
+   ```
+  
 ## Author
 
 [Pritesh Nimje](mailto:nimje.p@northeastern.edu)
