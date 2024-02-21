@@ -67,6 +67,16 @@ variable "machine_type" {
   description = "Preset GCE machine type"
 }
 
+variable "image_name" {
+  type        = string
+  description = "Name for the resulting image build"
+}
+
+variable "image_family_name" {
+  type        = string
+  description = "Image family to which the resulting image belongs"
+}
+
 source "googlecompute" "gce" {
   project_id          = var.project_id
   source_image_family = var.source_image_family
@@ -77,13 +87,13 @@ source "googlecompute" "gce" {
   disk_type           = var.disk_type
   machine_type        = var.machine_type
   instance_name       = "${var.environment}-${var.instance_name}"
-  image_name          = "${var.environment}-${var.instance_name}-image-{{timestamp}}"
+  image_name          = "${var.environment}-${var.image_name}-{{timestamp}}"
+  image_family        = "${var.environment}-${var.image_family_name}"
   labels = {
     environment  = var.environment
     organization = "csye-6225",
     service      = "cloud-native-webapp"
   }
-  tags = ["webapp", "allow-http", "deny-ssh"]
 }
 
 build {
