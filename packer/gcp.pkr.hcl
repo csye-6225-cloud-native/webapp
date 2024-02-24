@@ -27,6 +27,11 @@ variable "subnet_id" {
   description = "Subnet to attach to the instance"
 }
 
+variable "source_image_family" {
+  type        = string
+  description = "Base OS family version"
+}
+
 variable "ssh_username" {
   type        = string
   description = "Username to ssh into the instance"
