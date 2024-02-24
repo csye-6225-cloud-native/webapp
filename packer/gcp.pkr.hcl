@@ -42,11 +42,6 @@ variable "db_password" {
   description = "Password for the database user"
 }
 
-variable "source_image_family" {
-  type        = string
-  description = "Base OS family version"
-}
-
 variable "disk_size" {
   type        = number
   description = "Disk size to attach to the instance"
@@ -77,7 +72,7 @@ variable "image_family_name" {
   description = "Image family to which the resulting image belongs"
 }
 
-source "googlecompute" "gce"       {
+source "googlecompute" "gce" {
   project_id          = var.project_id
   source_image_family = var.source_image_family
   zone                = var.zone
