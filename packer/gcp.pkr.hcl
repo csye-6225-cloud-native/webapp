@@ -77,7 +77,7 @@ variable "image_family_name" {
   description = "Image family to which the resulting image belongs"
 }
 
-source "googlecompute" "gce" {
+source "googlecompute" "gce"       {
   project_id          = var.project_id
   source_image_family = var.source_image_family
   zone                = var.zone
