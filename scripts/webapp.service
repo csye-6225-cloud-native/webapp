@@ -2,6 +2,7 @@
 Description=Cloud-native Web Application
 After=network.target
 After=syslog.target
+After=google-startup-scripts.service
 ConditionPathExists=/home/csye6225/webapp.env
 
 [Service]
