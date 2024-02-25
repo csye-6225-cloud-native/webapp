@@ -37,7 +37,7 @@ variable "ssh_username" {
   description = "Username to ssh into the instance"
 }
 
-variable "db_user" {
+variable "db_username" {
   type        = string
   description = "Username for the database user"
 }
@@ -111,8 +111,8 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-      "POSTGRES_USER=${var.db_user}",
-      "POSTGRES_PASSWORD=${var.db_password}"
+      "DB_USERNAME=${var.db_username}",
+      "DB_PASSWORD=${var.db_password}"
     ]
     scripts = [
       "../scripts/setup.sh",

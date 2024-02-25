@@ -38,8 +38,8 @@ jobs:
           echo project_id=\"${{ secrets.GCP_PROJECT_ID }}\" >> gcp.pkrvars.hcl
           echo zone=\"${{ secrets.GCP_ZONE }}\" >> gcp.pkrvars.hcl
           echo ssh_username=\"${{ secrets.SSH_USERNAME }}\" >> gcp.pkrvars.hcl
-          echo db_user=\"${{ secrets.POSTGRES_USER }}\" >> gcp.pkrvars.hcl
-          echo db_password=\"${{ secrets.POSTGRES_PASSWORD }}\" >> gcp.pkrvars.hcl
+          echo db_username=\"${{ secrets.DB_USERNAME }}\" >> gcp.pkrvars.hcl
+          echo db_password=\"${{ secrets.DB_PASSWORD }}\" >> gcp.pkrvars.hcl
           echo source_image_family=\"${{ secrets.SOURCE_IMAGE_FAMILY }}\" >> gcp.pkrvars.hcl
           echo subnet_id=\"${{ secrets.SUBNET_ID }}\" >> gcp.pkrvars.hcl
           echo disk_size=${{ secrets.DISK_SIZE }} >> gcp.pkrvars.hcl
