@@ -14,8 +14,8 @@ jobs:
         shell: bash
 
     env:
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
     steps:
       - name: Checkout
@@ -35,8 +35,8 @@ jobs:
           
           # Configure PostgresSQL
           sudo -u postgres psql -c "CREATE DATABASE cloud_db;"
-          sudo -u postgres psql -c "CREATE USER ${{ secrets.POSTGRES_USER }} WITH PASSWORD '${{ secrets.POSTGRES_PASSWORD}}';"
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.POSTGRES_USER }};"
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH PASSWORD '${{ secrets.DB_PASSWORD }}';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.DB_USERNAME }};"
 
       - name: Build Application
         run: mvn clean install -DskipTests

@@ -23,28 +23,28 @@ else
   echo "OpenJDK installation failed"
 fi
 
-# Install PostgreSQL
-sudo dnf install -y postgresql-server postgresql-contrib
-sudo postgresql-setup --initdb
-
-sudo sed -ri 's/^(host\s+all\s+all\s+127.0.0.1\/32\s+)ident/\1md5/' /var/lib/pgsql/data/pg_hba.conf
-sudo sed -ri 's/^(host\s+all\s+all\s+::1\/128\s+)ident/\1md5/' /var/lib/pgsql/data/pg_hba.conf
-
-sudo systemctl enable postgresql
-sudo systemctl start postgresql
-sudo systemctl status postgresql
-
-PSQL_SERVICE=$?
-if [ $PSQL_SERVICE -eq 0 ]; then
-  echo "PostgreSQL service started"
-else
-  echo "PostgreSQL service failed to start"
-fi
-
-# Configure PostgreSQL
-sudo -i -u postgres psql <<EOF
-CREATE DATABASE cloud_db;
-CREATE ROLE $POSTGRES_USER WITH LOGIN PASSWORD '$POSTGRES_PASSWORD';
-GRANT ALL PRIVILEGES ON DATABASE cloud_db TO $POSTGRES_USER;
-EOF
+## Install PostgreSQL
+#sudo dnf install -y postgresql-server postgresql-contrib
+#sudo postgresql-setup --initdb
+#
+#sudo sed -ri 's/^(host\s+all\s+all\s+127.0.0.1\/32\s+)ident/\1md5/' /var/lib/pgsql/data/pg_hba.conf
+#sudo sed -ri 's/^(host\s+all\s+all\s+::1\/128\s+)ident/\1md5/' /var/lib/pgsql/data/pg_hba.conf
+#
+#sudo systemctl enable postgresql
+#sudo systemctl start postgresql
+#sudo systemctl status postgresql
+#
+#PSQL_SERVICE=$?
+#if [ $PSQL_SERVICE -eq 0 ]; then
+#  echo "PostgreSQL service started"
+#else
+#  echo "PostgreSQL service failed to start"
+#fi
+#
+## Configure PostgreSQL
+#sudo -i -u postgres psql <<EOF
+#CREATE DATABASE cloud_db;
+#CREATE ROLE $DB_USERNAME WITH LOGIN PASSWORD '$DB_PASSWORD';
+#GRANT ALL PRIVILEGES ON DATABASE cloud_db TO $DB_USERNAME;
+#EOF
 

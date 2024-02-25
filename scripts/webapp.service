@@ -2,11 +2,13 @@
 Description=Cloud-native Web Application
 After=network.target
 After=syslog.target
+ConditionPathExists=/home/csye6225/webapp.env
 
 [Service]
 Type=simple
 User=csye6225
 Group=csye6225
+EnvironmentFile=/home/csye6225/webapp.env
 ExecStart=/usr/bin/java -jar /home/csye6225/webapp.jar
 SuccessExitStatus=143
 Restart=always

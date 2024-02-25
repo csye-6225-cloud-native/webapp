@@ -3,8 +3,8 @@ spring:
     banner-mode: off
   datasource:
     url: jdbc:postgresql://localhost:5432/cloud_db
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
