@@ -2,13 +2,13 @@
 
 ## Overview
 
-This is a cloud-native web application built with Spring Boot and PostgreSQL.
+This is a cloud-native web application built with Spring Boot and PostgreSQL
 
 ## Prerequisites
 
 To install and run the app locally, you need to have the following installed:
 
-- JDK 17 or later
+- JDK 17 or later 
 - Maven 3.2 or later
 - PostgreSQL
 
