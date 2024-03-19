@@ -27,29 +27,35 @@ public class UserServiceImpl implements UserService {
     }
 
     public ResponseEntity<?> getUser(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            logger.warn("Get User failed: User not found for \"{}\" username", username);
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse(false, "User not found"));
+        try {
+            User user = userRepository.findByUsername(username);
+            if (user == null) {
+                logger.warn("Failed to get user: Username \"{}\" not found", username);
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse(false, "User not found"));
+            }
+
+            UserResponse userResponse = new UserResponse();
+            userResponse.setId(user.getId());
+            userResponse.setUsername(user.getUsername());
+            userResponse.setFirstname(user.getFirstname());
+            userResponse.setLastname(user.getLastname());
+            userResponse.setAccountCreated(user.getAccountCreated());
+            userResponse.setAccountUpdated(user.getAccountUpdated());
+
+            return ResponseEntity.ok(userResponse);
+
+        } catch (Exception e) {
+            logger.error("Failed to get user: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
         }
-
-        UserResponse userResponse = new UserResponse();
-        userResponse.setId(user.getId());
-        userResponse.setUsername(user.getUsername());
-        userResponse.setFirstname(user.getFirstname());
-        userResponse.setLastname(user.getLastname());
-        userResponse.setAccountCreated(user.getAccountCreated());
-        userResponse.setAccountUpdated(user.getAccountUpdated());
-
-        return ResponseEntity.ok(userResponse);
     }
 
     public ResponseEntity<?> createUser(CreateUserRequest request) {
         try {
             if (userRepository.existsByUsername(request.getUsername())) {
-                logger.warn("Create User failed: Username \"{}\" already exists", request.getUsername());
+                logger.warn("Failed to create user: Username \"{}\" already exists", request.getUsername());
                 return ResponseEntity
                         .badRequest()
                         .body(new ApiResponse(false, "Username already exists"));
@@ -72,14 +78,14 @@ public class UserServiceImpl implements UserService {
             userResponse.setAccountCreated(user.getAccountCreated());
             userResponse.setAccountUpdated(user.getAccountUpdated());
 
-            logger.info("Create User succeeded: {}", new ObjectMessage(userResponse));
+            logger.info("User created successfully: {}", userResponse.getUsername());
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(userResponse);
 
         } catch (Exception e) {
-            logger.error("Create User failed: {}", e.getMessage(), e);
+            logger.error("Failed to create user: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -87,7 +93,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> updateUser(UpdateUserRequest request) {
         try {
             if (request == null) {
-                logger.warn("Update User failed: Invalid request body received");
+                logger.warn("Failed to update user: Invalid request body received");
                 return ResponseEntity
                         .badRequest()
                         .body(new ApiResponse(false, "Invalid request body"));
@@ -95,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
             User user = userRepository.findByUsername(request.getUsername());
             if (user == null) {
-                logger.warn("Update User failed: User not found for \"{}\" username", request.getUsername());
+                logger.warn("Failed to update user: Username \"{}\" not found", request.getUsername());
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(new ApiResponse(false, "User not found"));
@@ -115,14 +121,14 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(user);
 
-            logger.info("Update User succeeded: {}", new ObjectMessage(request));
+            logger.info("User updated successfully: {}", user.getUsername());
 
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)
                     .build();
 
         } catch (Exception e) {
-            logger.error("Update User failed: {}", e.getMessage(), e);
+            logger.error("Failed to update user: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().build();
         }
     }

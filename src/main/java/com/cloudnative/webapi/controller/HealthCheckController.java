@@ -32,7 +32,7 @@ public class HealthCheckController {
         headers.add("X-Content-Type-Options", "nosniff");
 
         if (!request.getParameterMap().isEmpty() || request.getContentLength() > 0) {
-            logger.warn("HealthCheck: Invalid request received");
+            logger.warn("HealthCheck failed: Invalid request received");
 
             return ResponseEntity
                     .badRequest()
