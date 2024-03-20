@@ -16,4 +16,8 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
     database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+
+logging:
+  level:
+    root: INFO

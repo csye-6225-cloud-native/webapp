@@ -117,7 +117,8 @@ build {
     scripts = [
       "../scripts/setup.sh",
       "../scripts/artifact.sh",
-      "../scripts/systemd.sh"
+      "../scripts/systemd.sh",
+      "../scripts/monitoring.sh"
     ]
   }
 }
