@@ -46,8 +46,8 @@ To install and run the app locally, you need to have the following installed:
 
     Configure the following environment variables (recommended):
     ```sh
-    export POSTGRES_USER=test
-    export POSTGRES_PASSWORD=test
+    export DB_USERNAME=test
+    export DB_PASSWORD=test
     ```
     
 
