@@ -40,6 +40,11 @@ jobs:
           sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH PASSWORD '${{ secrets.DB_PASSWORD }}';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.DB_USERNAME }};"
 
+      - name: Install and Configure gcloud CLI
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
       - name: Create PubSub Topic
         run: gcloud pubsub topics create test_verify_email
 
