@@ -31,6 +31,7 @@ public class SecurityConfig  {
                         .requestMatchers(new String[]{
                                 "/healthz",
                                 "/v1/user",
+                                "/v1/user/verifyEmail",
                                 "/error"
                         }).permitAll()
                         .anyRequest().authenticated()

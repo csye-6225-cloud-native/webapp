@@ -21,3 +21,10 @@ spring:
 logging:
   level:
     root: INFO
+
+app:
+  email_verification_token_expiry_min: 2
+
+gcp:
+  project_id: ${GCP_PROJECT_ID}
+  email_verification_pubsub_topic: ${GCP_EMAIL_VERIFICATION_PUBSUB_TOPIC}

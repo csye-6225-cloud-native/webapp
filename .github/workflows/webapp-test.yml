@@ -16,6 +16,8 @@ jobs:
     env:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_EMAIL_VERIFICATION_PUBSUB_TOPIC: ${{ GCP_EMAIL_VERIFICATION_PUBSUB_TOPIC }}
 
     steps:
       - name: Checkout

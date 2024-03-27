@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 public class UserResponse {
@@ -21,6 +20,8 @@ public class UserResponse {
     private LocalDateTime accountCreated;
     @JsonProperty("account_updated")
     private LocalDateTime accountUpdated;
+    @JsonProperty("account_verified")
+    private Boolean accountVerified;
 
     public UserResponse() {
     }
@@ -49,6 +50,10 @@ public class UserResponse {
         return this.accountUpdated;
     }
 
+    public Boolean getAccountVerified() {
+        return this.accountVerified;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -71,5 +76,9 @@ public class UserResponse {
 
     public void setAccountUpdated(LocalDateTime accountUpdated) {
         this.accountUpdated = accountUpdated;
+    }
+
+    public void setAccountVerified(Boolean accountVerified) {
+        this.accountVerified = accountVerified;
     }
 }

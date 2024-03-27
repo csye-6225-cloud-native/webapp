@@ -8,10 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,6 +31,12 @@ public class User {
     private LocalDateTime accountCreated;
     @Column(nullable = false, name = "account_updated")
     private LocalDateTime accountUpdated;
+    @Column(nullable = false, name = "account_verified")
+    private Boolean accountVerified = false;
+    @Column(name = "verification_token", unique = true)
+    private String verificationToken;
+    @Column(name = "verification_token_expiry")
+    private LocalDateTime verificationTokenExpiry;
 
     public User() {
     }
@@ -86,6 +90,18 @@ public class User {
         return this.accountUpdated;
     }
 
+    public Boolean getAccountVerified() {
+        return this.accountVerified;
+    }
+
+    public String getVerificationToken() {
+        return this.verificationToken;
+    }
+
+    public LocalDateTime getVerificationTokenExpiry() {
+        return this.verificationTokenExpiry;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -106,9 +122,21 @@ public class User {
         this.lastName = lastname;
     }
 
-//    public void setAccountUpdated(LocalDateTime accountUpdated) {
-//        this.accountUpdated = accountUpdated;
-//    }
+    public void setAccountUpdated(LocalDateTime accountUpdated) {
+        this.accountUpdated = accountUpdated;
+    }
+
+    public void setAccountVerified(Boolean accountVerified) {
+        this.accountVerified = accountVerified;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public void setVerificationTokenExpiry(LocalDateTime verificationTokenExpiry) {
+        this.verificationTokenExpiry = verificationTokenExpiry;
+    }
 
     @Override
     public boolean equals(Object o) {
