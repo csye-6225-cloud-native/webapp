@@ -9,12 +9,12 @@ import org.springframework.core.Ordered;
 @Configuration
 public class FilterConfig {
 
-    @Bean
-    public FilterRegistrationBean<LoggingFilter> loggingFilter() {
-        FilterRegistrationBean<LoggingFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new LoggingFilter());
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<LoggingFilter> loggingFilter() {
+//        FilterRegistrationBean<LoggingFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new LoggingFilter());
+//        registrationBean.addUrlPatterns("/*");
+//        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+//        return registrationBean;
+//    }
 }

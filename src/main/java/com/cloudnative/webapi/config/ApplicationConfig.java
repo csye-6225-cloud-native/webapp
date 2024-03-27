@@ -1,14 +1,19 @@
 package com.cloudnative.webapi.config;
 
+import com.cloudnative.webapi.config.auth.CustomUserDetails;
 import com.cloudnative.webapi.entity.User;
 import com.cloudnative.webapi.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,14 +35,24 @@ public class ApplicationConfig {
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }
-            return new org.springframework.security.core.userdetails
-                    .User(user.getUsername(), user.getPassword(), AuthorityUtils.NO_AUTHORITIES);
+            return new CustomUserDetails(user);
         };
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider() {
+            @Override
+            protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication)
+                    throws AuthenticationException {
+                super.additionalAuthenticationChecks(userDetails, authentication);
+
+                CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+                if (!customUserDetails.isEmailVerified()) {
+                    throw new BadCredentialsException("Email is not verified");
+                }
+            }
+        };
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;

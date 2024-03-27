@@ -12,8 +12,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -32,6 +34,9 @@ public class UserAPIIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private static String testUserName;
 
@@ -74,6 +79,8 @@ public class UserAPIIntegrationTest {
 
         String id = response.jsonPath().getString("id");
         assertDoesNotThrow(() -> UUID.fromString(id), "Invalid UUID");
+
+        verifyTestUserAccount(username);
 
         getUserAndVerify(username, password)
                 .body("id", notNullValue())
@@ -118,5 +125,10 @@ public class UserAPIIntegrationTest {
                 .get("/v1/user/self")
                 .then()
                 .statusCode(200);
+    }
+
+    private void verifyTestUserAccount(String username) {
+        String sql = "UPDATE users SET account_verified = true WHERE username = ?";
+        jdbcTemplate.update(sql, username);
     }
 }
