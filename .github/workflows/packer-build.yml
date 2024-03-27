@@ -29,6 +29,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Install and Configure gcloud CLI
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
       - name: Install PostgresSQL
         run: |
           sudo apt update
@@ -40,16 +45,18 @@ jobs:
           sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH PASSWORD '${{ secrets.DB_PASSWORD }}';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_db TO ${{ secrets.DB_USERNAME }};"
 
+      - name: Create PubSub Topic
+        run: gcloud pubsub topics create test_verify_email
+
       - name: Build Artifact
         run: mvn clean package -DskipTests
 
       - name: Run Tests
         run: mvn test
 
-      - name: Install and Configure gcloud CLI
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Cleanup PubSub Topic
+        if: always()
+        run: gcloud pubsub topics delete test_verify_email
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
