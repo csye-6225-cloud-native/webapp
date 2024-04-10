@@ -97,3 +97,58 @@ jobs:
       - name: Packer Build
         run: "packer build --var-file=gcp.pkrvars.hcl gcp.pkr.hcl"
         working-directory: packer
+
+      - name: Create GCE Instance Template
+        id: instance_template_creation
+        run: |
+          # Create new instance template with 
+          IMAGE_NAME=$(jq -r '.builds[0].artifact_id' packer-manifest.json)
+          INSTANCE_TEMPLATE_NAME="dev-webapp-vm-template-${{ github.runner_number }}"
+          
+          gcloud compute instance-templates create $INSTANCE_TEMPLATE_NAME \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --instance-template-region="${{ secrets.GCP_REGION }}" \
+            --description="${{ secrets.INSTANCE_TEMPLATE_DESCRIPTION }}" \
+            --machine-type="${{ secrets.INSTANCE_TEMPLATE_MACHINE_TYPE }}" \
+            --tags="${{ secrets.INSTANCE_TEMPLATE_TAGS }}" \
+            --image="$IMAGE_NAME" \
+            --boot-disk-size=${{ secrets.INSTANCE_TEMPLATE_DISK_SIZE }} \
+            --boot-disk-type="${{ secrets.INSTANCE_TEMPLATE_DISK_TYPE }}" \
+            --boot-disk-kms-key="${{ secrets.INSTANCE_TEMPLATE_KMS_KEY }}" \
+            --subnet="${{ secrets.INSTANCE_TEMPLATE_SUBNET }}" \
+            --network-tier="${{ secrets.INSTANCE_TEMPLATE_NETWORK_TIER }}" \
+            --region="${{ secrets.GCP_PROJECT_ID }}" \
+            --service-account="${{ secrets.INSTANCE_TEMPLATE_SERVICE_ACCOUNT }}" \
+            --scopes="${{ secrets.INSTANCE_TEMPLATE_SCOPES }}" \
+            --metadata=startup-script='#!/bin/bash
+          cat <<EOF > /home/csye6225/webapp.env
+          SPRING_DATASOURCE_URL=${{ secrets.INSTANCE_TEMPLATE_METADATA_DB_HOST }}
+          SPRING_DATASOURCE_USERNAME=${{ secrets.INSTANCE_TEMPLATE_METADATA_DB_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD=${{ secrets.INSTANCE_TEMPLATE_METADATA_DB_PASSWORD }}
+          LOGGING_LEVEL_ROOT=${{ secrets.INSTANCE_TEMPLATE_METADATA_LOGGING_LEVEL }}
+          LOGGING_PATH=${{ secrets.INSTANCE_TEMPLATE_LOGGING_PATH }}
+          GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+          GCP_EMAIL_VERIFICATION_PUBSUB_TOPIC=${{ secrets.INSTANCE_TEMPLATE_METADATA_EMAIL_VERIFICATION_PUBSUB_TOPIC }}
+          EOF'
+          
+          echo "::set-output name=INSTANCE_TEMPLATE_NAME::$INSTANCE_TEMPLATE_NAME"
+
+      - name: Start Rolling Update
+        run: |
+          # Set the new template in MIG
+          gcloud compute instance-groups managed set-instance-template ${{ secrets.INSTANCE_GROUP_NAME }} \
+            --template=${{ steps.instance_template_creation.outputs.INSTANCE_TEMPLATE_NAME }} \
+            --region=${{ secrets.GCP_REGION }}
+          
+          # Start rolling update with new instance template
+          gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_NAME }} \
+            --version=template=${{ steps.instance_template_creation.outputs.INSTANCE_TEMPLATE_NAME }} \
+            --region=${{ secrets.GCP_REGION }}
+
+      - name: Check MIG Status
+        run: |   
+          # Wait for the instance group to reach desired state 
+          gcloud compute instance-groups managed wait-until ${{ secrets.INSTANCE_GROUP_NAME }} \
+            --version-target-reached \
+            --region=${{ secrets.GCP_REGION }}
+
