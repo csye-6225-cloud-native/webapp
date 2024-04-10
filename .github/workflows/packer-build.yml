@@ -134,18 +134,18 @@ jobs:
           GCP_EMAIL_VERIFICATION_PUBSUB_TOPIC=${{ secrets.INSTANCE_TEMPLATE_METADATA_EMAIL_VERIFICATION_PUBSUB_TOPIC }}
           EOF'
           
-          echo "::set-output name=INSTANCE_TEMPLATE_NAME::projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{ secrets.GCP_REGION }}/instanceTemplates/$INSTANCE_TEMPLATE_NAME"
+          echo "INSTANCE_TEMPLATE_NAME=projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{ secrets.GCP_REGION }}/instanceTemplates/$INSTANCE_TEMPLATE_NAME" >> $GITHUB_ENV
 
       - name: Start Rolling Update
         run: |
           # Set the new template in MIG
           gcloud compute instance-groups managed set-instance-template dev-webapp-vm-mig \
-            --template=${{ steps.instance_template_creation.outputs.INSTANCE_TEMPLATE_NAME }} \
+            --template=$INSTANCE_TEMPLATE_NAME \
             --region=${{ secrets.GCP_REGION }}
           
           # Start rolling update with new instance template
           gcloud compute instance-groups managed rolling-action start-update ${{ secrets.INSTANCE_GROUP_NAME }} \
-            --version=template=${{ steps.instance_template_creation.outputs.INSTANCE_TEMPLATE_NAME }} \
+            --version=template=$INSTANCE_TEMPLATE_NAME \
             --region=${{ secrets.GCP_REGION }}
 
       - name: Check MIG Status
