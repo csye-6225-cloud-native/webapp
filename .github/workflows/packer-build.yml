@@ -103,7 +103,7 @@ jobs:
         run: |
           # Create new instance template with 
           IMAGE_NAME=$(jq -r '.builds[0].artifact_id' packer/packer-manifest.json)
-          INSTANCE_TEMPLATE_NAME="dev-webapp-vm-template-${{ github.runner_number }}"
+          INSTANCE_TEMPLATE_NAME="dev-webapp-vm-template-${{ github.run_number }}"
           
           gcloud compute instance-templates create $INSTANCE_TEMPLATE_NAME \
             --project="${{ secrets.GCP_PROJECT_ID }}" \
