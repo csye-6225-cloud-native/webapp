@@ -134,7 +134,7 @@ jobs:
           GCP_EMAIL_VERIFICATION_PUBSUB_TOPIC=${{ secrets.INSTANCE_TEMPLATE_METADATA_EMAIL_VERIFICATION_PUBSUB_TOPIC }}
           EOF'
           
-          echo "::set-output name=INSTANCE_TEMPLATE_NAME::$INSTANCE_TEMPLATE_NAME"
+          echo "::set-output name=INSTANCE_TEMPLATE_NAME::projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{ secrets.GCP_REGION }}/instanceTemplates/$INSTANCE_TEMPLATE_NAME"
 
       - name: Start Rolling Update
         run: |
