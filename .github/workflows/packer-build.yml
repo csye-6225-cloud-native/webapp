@@ -111,7 +111,7 @@ jobs:
             --description="${{ secrets.INSTANCE_TEMPLATE_DESCRIPTION }}" \
             --machine-type="${{ secrets.INSTANCE_TEMPLATE_MACHINE_TYPE }}" \
             --tags="${{ secrets.INSTANCE_TEMPLATE_TAGS }}" \
-            --image=$IMAGE_NAME \
+            --image="$IMAGE_NAME" \
             --boot-disk-size=${{ secrets.INSTANCE_TEMPLATE_DISK_SIZE }} \
             --boot-disk-type="${{ secrets.INSTANCE_TEMPLATE_DISK_TYPE }}" \
             --boot-disk-kms-project="${{ secrets.GCP_PROJECT_ID }}" \
@@ -120,7 +120,7 @@ jobs:
             --boot-disk-kms-key="${{ secrets.INSTANCE_TEMPLATE_KMS_KEY }}" \
             --subnet="${{ secrets.INSTANCE_TEMPLATE_SUBNET }}" \
             --network-tier="${{ secrets.INSTANCE_TEMPLATE_NETWORK_TIER }}" \
-            --region="${{ secrets.GCP_PROJECT_ID }}" \
+            --region="${{ secrets.GCP_REGION }}" \
             --service-account="${{ secrets.INSTANCE_TEMPLATE_SERVICE_ACCOUNT }}" \
             --scopes="${{ secrets.INSTANCE_TEMPLATE_SCOPES }}" \
             --metadata=startup-script='#!/bin/bash
