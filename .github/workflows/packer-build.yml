@@ -120,7 +120,7 @@ jobs:
             --boot-disk-kms-key="${{ secrets.INSTANCE_TEMPLATE_KMS_KEY }}" \
             --subnet="${{ secrets.INSTANCE_TEMPLATE_SUBNET }}" \
             --network-tier="${{ secrets.INSTANCE_TEMPLATE_NETWORK_TIER }}" \
-            --region="${{ secrets.GCP_PROJECT_ID }}" \
+            --region="${{ secrets.GCP_REGION }}" \
             --service-account="${{ secrets.INSTANCE_TEMPLATE_SERVICE_ACCOUNT }}" \
             --scopes="${{ secrets.INSTANCE_TEMPLATE_SCOPES }}" \
             --metadata=startup-script='#!/bin/bash
