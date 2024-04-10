@@ -4,7 +4,7 @@
 
 This is a cloud-native web application built with Spring Boot and PostgreSQL
 
-## Prerequisites
+## Prerequisites 
 
 To install and run the app locally, you need to have the following installed: 
 
