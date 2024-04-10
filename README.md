@@ -10,7 +10,7 @@ To install and run the app locally, you need to have the following installed:
 
 - JDK 17 or later 
 - Maven 3.2 or later
-- PostgreSQL
+- PostgreSQL 
 
 
 ## Installation
