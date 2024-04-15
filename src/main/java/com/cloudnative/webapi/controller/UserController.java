@@ -32,7 +32,7 @@ public class UserController {
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.getUser(username);
+        return userService.getUser(username); 
     }
 
     @PutMapping("/self")
