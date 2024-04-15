@@ -69,7 +69,7 @@ public class UserAPIIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(newUser.toJSONString())
                 .when()
-                .post("/v1/user")
+                .post("/v2/user")
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue())
@@ -106,7 +106,7 @@ public class UserAPIIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(newUser.toJSONString())
                 .when()
-                .put("/v1/user/self")
+                .put("/v2/user/self")
                 .then()
                 .statusCode(204);
 
@@ -122,7 +122,7 @@ public class UserAPIIntegrationTest {
                 .auth()
                 .basic(username, password)
                 .when()
-                .get("/v1/user/self")
+                .get("/v2/user/self")
                 .then()
                 .statusCode(200);
     }

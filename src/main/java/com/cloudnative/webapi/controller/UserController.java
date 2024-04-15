@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v2/user")
 public class UserController {
 
     private final UserService userService;
@@ -32,7 +32,7 @@ public class UserController {
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.getUser(username);
+        return userService.getUser(username); 
     }
 
     @PutMapping("/self")
