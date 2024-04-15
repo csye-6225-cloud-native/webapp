@@ -2,7 +2,7 @@
 
 ## Overview 
 
-This is a cloud-native web application built with Spring Boot and PostgreSQL  
+This is a cloud-native web application built with Spring Boot and PostgreSQL   
 
 ## Prerequisites 
 
